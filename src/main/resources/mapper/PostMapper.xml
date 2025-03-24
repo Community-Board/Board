@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.joonwoo.mapper.PostMapper">
+
+    <!-- 게시글 목록 -->
+	<select id="getAllPosts" resultType="com.example.joonwoo.entity.PostEntity">
+	    SELECT * FROM posts WHERE isDeleted = FALSE;
+	</select>
+	
+	<!-- 게시글 단건 조회 -->
+	<select id="getPostById" parameterType="int" resultType="com.example.joonwoo.entity.PostEntity">
+	    SELECT * FROM posts WHERE id = #{id} AND isDeleted = FALSE;
+	</select>
+	
+	<!-- 게시글 추가 -->
+	<insert id="insertPost" parameterType="com.example.joonwoo.entity.PostEntity" useGeneratedKeys="true" keyProperty="id">
+	    INSERT INTO posts (title, content, created_at, updated_at) 
+	    VALUES (#{title}, #{content}, NOW(), NOW());
+	</insert>
+	
+	<!-- 게시글 수정 -->
+	<update id="updatePost" parameterType="com.example.joonwoo.entity.PostEntity">
+	    UPDATE posts SET title = #{title}, content = #{content}, updated_at = NOW() WHERE id = #{id};
+	</update>
+	
+	<!-- 게시글 삭제 soft delete -->
+	<update id="deletePost" parameterType="int">
+	    UPDATE posts SET isDeleted = TRUE WHERE id = #{id};
+	</update>
+
+
+</mapper>
