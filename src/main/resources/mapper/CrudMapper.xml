@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.example.jin.mapper.CrudMapper">
+	
+	<!-- 전체 조회 -->
+	<select id="getAllList" resultType="CrudVO">
+		SELECT * FROM crud.board 
+	</select>
+	
+	<!-- 한건 조회 -->
+	<select id="getById" resultType="CrudVO">
+		SELECT * FROM crud.board
+		WHERE id = #{id}
+	</select>
+	
+	<!-- 등록 -->
+	<insert id="insertBoard">
+		INSERT INTO crud.board(id, title, content)
+		VALUES (#{id}, #{title}, #{content})
+	</insert>
+	
+	<!-- 수정 -->
+	<update id="updateBoard">
+		UPDATE crud.board
+		SET title = #{title} , content = #{content}
+		WHERE id = #{id} 
+	</update>
+	
+	<!-- 삭제 -->
+	<delete id="deleteBoard">
+		DELETE FROM crud.board
+		WHERE id = #{id}
+	</delete>
+	
+</mapper>	
