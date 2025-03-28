@@ -16,13 +16,13 @@
 	
 	<!-- 게시글 추가 -->
 	<insert id="insertPost" parameterType="com.example.joonwoo.entity.PostEntity" useGeneratedKeys="true" keyProperty="id">
-	    INSERT INTO posts (title, content, created_at, updated_at) 
-	    VALUES (#{title}, #{content}, NOW(), NOW());
+	    INSERT INTO posts (title, content) 
+	    VALUES (#{title}, #{content});
 	</insert>
 	
 	<!-- 게시글 수정 -->
 	<update id="updatePost" parameterType="com.example.joonwoo.entity.PostEntity">
-	    UPDATE posts SET title = #{title}, content = #{content}, updated_at = NOW() WHERE id = #{id};
+	    UPDATE posts SET title = #{title}, content = #{content} WHERE id = #{id};
 	</update>
 	
 	<!-- 게시글 삭제 soft delete -->
