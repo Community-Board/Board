@@ -2,18 +2,19 @@ package com.example.joonwoo.controller;
 
 import com.example.joonwoo.entity.PostEntity;
 import com.example.joonwoo.service.PostService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/posts")
+@RequiredArgsConstructor
 public class PostController {
-    private final PostService postService;
+	private final PostService postService;
 
-    public PostController(PostService postService) { // 생성자
-        this.postService = postService;
-    }
+//    public PostController(PostService postService) { // 생성자
+//        this.postService = postService;
+//    }
 
     @GetMapping
     public List<PostEntity> getAllPosts() { // GET 방식을 통한 게시글 목록

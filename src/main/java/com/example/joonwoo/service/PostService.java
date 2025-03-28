@@ -2,17 +2,20 @@ package com.example.joonwoo.service;
 
 import com.example.joonwoo.entity.PostEntity;
 import com.example.joonwoo.mapper.PostMapper;
-import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PostService {
     private final PostMapper postMapper;
 
-    public PostService(PostMapper postMapper) { // 생성자
-        this.postMapper = postMapper;
-    }
+//    public PostService(PostMapper postMapper) { // 생성자
+//        this.postMapper = postMapper;
+//    }
 
     public List<PostEntity> getAllPosts() { // 게시글 목록
         return postMapper.getAllPosts();
