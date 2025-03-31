@@ -210,3 +210,5 @@ replay_pid*
 
 target/
 application.properties
+
+.idea
