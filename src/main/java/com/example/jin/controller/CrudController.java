@@ -11,43 +11,43 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.jin.service.impl.CrudServiceImpl;
+import com.example.jin.service.CrudService;
 import com.example.jin.vo.CrudVO;
 
 @RestController
-@RequestMapping("/board")
+@RequestMapping("/crud")
 public class CrudController {
 	
-	private final CrudServiceImpl crudServiceImpl;
+	private final CrudService crudService;
 	
 	// 생성자
-	public CrudController(CrudServiceImpl crudServiceImpl) {
-		this.crudServiceImpl = crudServiceImpl;
+	public CrudController(CrudService crudService) {
+		this.crudService = crudService;
 	}
 	
 	@GetMapping
 	public List<CrudVO> getAllList() {
-		return crudServiceImpl.getAllList();
+		return crudService.getAllList();
 	}
 	
 	@GetMapping("/{id}")
 	public CrudVO getById(@PathVariable String id) {
-		return crudServiceImpl.getById(id);
+		return crudService.getById(id);
 	}
 	
 	@PostMapping
 	public void insertBoard(@RequestBody CrudVO crudVO) {
-		crudServiceImpl.insertBoard(crudVO);
+		crudService.insertBoard(crudVO);
 	}
 	
 	@PutMapping("/{id}")
 	public void updateBoard(@PathVariable String id, @RequestBody CrudVO crudVO) {
 		crudVO.setId(id);
-		crudServiceImpl.updateBoard(crudVO);
+		crudService.updateBoard(crudVO);
 	}
 	
 	@DeleteMapping("/{id}")
 	public void deleteBoard(@PathVariable String id) {
-		crudServiceImpl.deleteBoard(id);
+		crudService.deleteBoard(id);
 	}
 }
