@@ -19,16 +19,14 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody UserLoginRequestDto requestDto) {
-
         String token = userService.login(requestDto);
 
-        Map<String, String> response = new HashMap<>();
+        Map<String, String> response = new HashMap<>(); // 토큰을 json 형식으로 전달하기위한 map<>형식 사용
         response.put("token", token);
 
         return ResponseEntity.ok(response);
     }
 
-    // 인증 테스트 API
     @GetMapping("/me")
     public ResponseEntity<String> getMyInfo(@RequestHeader("Authorization") String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -37,7 +35,7 @@ public class UserController {
 
         String token = authHeader.substring(7);
         try {
-            String username = jwtUtil.validateAndGetUsername(token);
+            String username = jwtUtil.validateAndGetUserNick(token);
             return ResponseEntity.ok("안녕하세요, " + username + "님");
         } catch (RuntimeException e) {
             return ResponseEntity.status(401).body("토큰이 유효하지 않음");

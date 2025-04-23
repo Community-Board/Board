@@ -20,8 +20,8 @@ public class JwtInterceptor implements HandlerInterceptor {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
             try {
-                String username = jwtUtil.validateAndGetUsername(token);
-                System.out.println("인터셉터 - 인증된 사용자: " + username);
+                String userNick = jwtUtil.validateAndGetUserNick(token);
+                System.out.println("인터셉터 - 인증된 사용자: " + userNick);
             } catch (RuntimeException e) {
                 System.out.println("인터셉터 - 토큰이 유효하지 않음");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

@@ -7,19 +7,19 @@ public class UserLoginRequestDto {
     private String userId;
     private String userPw;
 
-    public String getUsername() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUsername(String username) {
+    public void setUserId(String username) {
         this.userId = username;
     }
 
-    public String getPassword() {
+    public String getUserPw() {
         return userPw;
     }
 
-    public void setPassword(String password) {
+    public void setUserPw(String password) {
         this.userPw = password;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.joonwoo.util;
 
+import com.example.joonwoo.entity.UserEntity;
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
@@ -9,7 +10,7 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private static final String SECRET_KEY = "secretkeysecretkeysecretkeysecretkeysecretkey";  // 32 바이트 비밀키
+    private static final String SECRET_KEY = "secretkeysecretkeysecretkeysecretkeysecretkey"; // 32바이트 이상
     private static final long EXPIRATION_TIME = 86400000; // 24시간
 
     private SecretKey getSigningKey() {
@@ -23,26 +24,39 @@ public class JwtUtil {
     }
 
     // 토큰 생성
-    public String generateToken(String username) {
+    public String generateToken(UserEntity user) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
+
         return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(getSigningKey())
+                .claim("userNo", user.getUserNo())
+                .claim("userRole", user.getUserRole())
+                .claim("userNick", user.getUserNick())
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .setIssuer("Board-server")
+                .setAudience("web-client")
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // 토큰 검증 후 사용자 이름 반환
-    public String validateAndGetUsername(String token) {
+    // 토큰 검증 후 Subject 추출
+    public String validateAndGetUserNick(String token) {
         try {
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(getSigningKey())
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-            return claims.getSubject();
+            
+            // userNick을 추출
+            String userNick = claims.get("userNick", String.class);
+            System.out.println("User Nick: " + userNick);
+            return userNick;
         } catch (JwtException | IllegalArgumentException e) {
             throw new RuntimeException("토큰이 유효하지 않음");
         }
     }
+
+
 }
