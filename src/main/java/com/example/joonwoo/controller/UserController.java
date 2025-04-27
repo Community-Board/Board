@@ -1,13 +1,15 @@
 package com.example.joonwoo.controller;
 
 import com.example.joonwoo.dto.UserLoginRequestDto;
+import com.example.joonwoo.exception.TokenException;
 import com.example.joonwoo.service.UserService;
 import com.example.joonwoo.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -30,15 +32,11 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity<String> getMyInfo(@RequestHeader("Authorization") String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return ResponseEntity.badRequest().body("Authorization 헤더가 잘못됨");
+            throw new TokenException("Authorization 헤더가 잘못됨");
         }
 
         String token = authHeader.substring(7);
-        try {
-            String username = jwtUtil.validateAndGetUserNick(token);
-            return ResponseEntity.ok("안녕하세요, " + username + "님");
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(401).body("토큰이 유효하지 않음");
-        }
+        String username = jwtUtil.validateAndGetUserNick(token);
+        return ResponseEntity.ok("안녕하세요, " + username + "님");
     }
 }

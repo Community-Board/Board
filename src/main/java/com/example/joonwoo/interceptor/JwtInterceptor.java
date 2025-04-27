@@ -1,6 +1,8 @@
 package com.example.joonwoo.interceptor;
 
 import com.example.joonwoo.util.JwtUtil;
+import com.example.joonwoo.exception.TokenException;
+import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,15 +22,21 @@ public class JwtInterceptor implements HandlerInterceptor {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
             try {
-                String userNick = jwtUtil.validateAndGetUserNick(token);
-                System.out.println("인터셉터 - 인증된 사용자: " + userNick);
-            } catch (RuntimeException e) {
-                System.out.println("인터셉터 - 토큰이 유효하지 않음");
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return false;
+                jwtUtil.validateAndGetUserNick(token);
+                System.out.println("인터셉터 - 인증된 사용자: " + token);
+            } catch (ExpiredJwtException e) {
+                throw new TokenException("토큰이 만료되었습니다.");
+            } catch (UnsupportedJwtException e) {
+                throw new TokenException("지원하지 않는 토큰입니다.");
+            } catch (MalformedJwtException e) {
+                throw new TokenException("토큰 형식이 올바르지 않습니다.");
+            } catch (IllegalArgumentException e) {
+                throw new TokenException("잘못된 토큰입니다.");
+            } catch (JwtException e) {
+                throw new TokenException("토큰 오류가 발생했습니다.");
             }
         }
 
-        return true; // 계속 처리하도록 허용
+        return true;
     }
 }
