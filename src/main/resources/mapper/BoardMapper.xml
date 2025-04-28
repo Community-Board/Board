@@ -6,6 +6,9 @@
 	<!-- 전체 게시글 조회 -->
 	<select id="getAllList" resultType="BoardVO">
 		SELECT * FROM board.board
+		ORDER BY board_no DESC
+		LIMIT #{pageSize}
+   		OFFSET ${(page - 1) * pageSize}
 	</select>
 	
 	<!-- 게시글 한건 조회 -->

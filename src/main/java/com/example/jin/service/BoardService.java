@@ -2,12 +2,14 @@ package com.example.jin.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.example.jin.dto.request.BoardReqDTO;
 import com.example.jin.vo.BoardVO;
 
 public interface BoardService {
 	
-	List<BoardVO> getAllList();					// 전체 게시글 조회
+	List<BoardVO> getAllList(@Param("page") int page, @Param("pageSize") int pageSize);					// 전체 게시글 조회
 	
 	BoardVO getByNo(Long boardNo);				// 게시글 한건 조회
 	

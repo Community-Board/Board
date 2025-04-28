@@ -9,11 +9,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.jin.dto.request.BoardReqDTO;
 import com.example.jin.service.BoardService;
 import com.example.jin.vo.BoardVO;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/board")
@@ -26,8 +29,9 @@ public class BoardController {
 	}
 	
 	@GetMapping
-	public List<BoardVO> getAllList(){
-		return boardService.getAllList();
+	public List<BoardVO> getAllList(@RequestParam(defaultValue = "1")int page, 
+									@RequestParam(defaultValue = "10") int pageSize) {
+		return boardService.getAllList(page, pageSize);
 	}
 	
 	@GetMapping("/{boardNo}")
@@ -36,12 +40,12 @@ public class BoardController {
 	}
 	
 	@PostMapping
-	public void insertBoard(@RequestBody BoardReqDTO boardReqDTO) {
+	public void insertBoard(@Valid @RequestBody BoardReqDTO boardReqDTO) {
 		boardService.insertBoard(boardReqDTO);
 	}
 	
 	@PutMapping("/{boardNo}")
-	public void updateBoard(@PathVariable Long boardNo, @RequestBody BoardReqDTO boardReqDTO) {
+	public void updateBoard(@PathVariable Long boardNo, @Valid @RequestBody BoardReqDTO boardReqDTO) {
 		boardService.updateBoard(boardReqDTO);
 	}
 	

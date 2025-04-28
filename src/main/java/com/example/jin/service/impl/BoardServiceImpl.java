@@ -18,8 +18,8 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public List<BoardVO> getAllList() {
-		return boardMapper.getAllList();
+	public List<BoardVO> getAllList(int page, int pageSize) {
+		return boardMapper.getAllList(page, pageSize);
 	}
 
 	@Override
