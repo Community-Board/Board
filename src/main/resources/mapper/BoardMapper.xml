@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.jin.mapper.BoardMapper">
+	
+	<!-- 전체 게시글 조회 -->
+	<select id="getAllList" resultType="BoardVO">
+		SELECT * FROM board.board
+		ORDER BY board_no DESC
+		LIMIT #{pageSize}
+   		OFFSET ${(page - 1) * pageSize}
+	</select>
+	
+	<!-- 게시글 한건 조회 -->
+	<select id="getByNo" resultType="BoardVO">
+		SELECT * FROM board.board
+		WHERE board_no = #{boardNo}
+	</select>
+	
+	<!-- 등록 -->
+	<insert id="insertBoard" parameterType="BoardVO">
+		INSERT INTO board.board
+			(board_title, board_content, board_type, user_no)
+		VALUES
+			(#{boardTitle}, #{boardContent}, #{boardType}, #{userNo})
+	</insert>
+	
+	<!-- 수정 -->
+	<update id="updateBoard" parameterType="BoardVO">
+		UPDATE board.board
+		SET board_title = #{boardTitle} , board_content = #{boardContent}
+		WHERE board_no = #{boardNo}
+	</update>
+	
+	<!-- 삭제 -->
+	<update id="deleteBoard" parameterType="long">
+		UPDATE board.board
+		SET is_deleted = true
+		WHERE board_no = #{boardNo}
+	</update>
+	
+	<!-- 조회수 -->
+	<update id="boardCount" parameterType="long">
+		UPDATE board.board
+		SET board_count = board_count + 1
+		WHERE board_no = #{boardNo}
+	</update>
+	
+	<!-- 좋아요 -->
+	<update id="boardLike" parameterType="long">
+	    UPDATE board.board
+    	SET board_like = board_like + 1
+    	WHERE board_no = #{boardNo}
+	</update>
+	
+</mapper>
