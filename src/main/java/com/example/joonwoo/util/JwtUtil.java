@@ -11,7 +11,6 @@ import java.util.Date;
 public class JwtUtil {
 
     private static final String SECRET_KEY = "secretkeysecretkeysecretkeysecretkeysecretkey"; // 32바이트 이상
-    //private static final long EXPIRATION_TIME = 1000; // 1초 오류 시험용 코드
     private static final long EXPIRATION_TIME = 86400000; // 24시간
         
     private SecretKey getSigningKey() {
@@ -50,7 +49,6 @@ public class JwtUtil {
                 .getBody();
 
         String userNick = claims.get("userNick", String.class);
-        System.out.println("User Nick: " + userNick);
         return userNick;
     }
 }
