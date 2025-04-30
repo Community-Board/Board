@@ -1,6 +1,7 @@
 package com.example.board.controller;
 
 import com.example.board.dto.request.UserLoginRequestDto;
+import com.example.board.dto.request.UserRegisterRequestDto;
 import com.example.board.service.UserService;
 import com.example.board.exception.TokenException;
 import com.example.board.util.JwtUtil;
@@ -28,7 +29,14 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/me")
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody UserRegisterRequestDto requestDto) {
+        userService.register(requestDto);
+        return ResponseEntity.ok("회원가입 성공");
+    }
+    
+    
+    @GetMapping("/mypage")
     public ResponseEntity<String> getMyInfo(@RequestHeader("Authorization") String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             throw new TokenException("Authorization 헤더가 잘못됨");

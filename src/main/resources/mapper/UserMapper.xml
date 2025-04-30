@@ -5,4 +5,14 @@
     <select id="findByUserId" resultType="com.example.board.entity.UserEntity">
         SELECT * FROM user WHERE user_id = #{userId} AND is_deleted = false
     </select>
+    
+    <insert id="insertUser" parameterType="com.example.board.entity.UserEntity">
+        INSERT INTO `user` (
+            user_id, user_pw, user_nick, user_birth, user_gender,
+            user_tel, user_email, user_role, created_at, updated_at, is_deleted
+        ) VALUES (
+            #{userId}, #{userPw}, #{userNick}, #{userBirth}, #{userGender},
+            #{userTel}, #{userEmail}, 'user', NOW(), NOW(), false
+        )
+    </insert>
 </mapper>
