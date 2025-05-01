@@ -32,7 +32,6 @@ public class UserService {
     
     public void register(UserRegisterRequestDto dto) {
         String encodedPw = passwordEncoder.encode(dto.getUserPw());
-        dto.setUserPw(encodedPw);
-        userMapper.insertUser(dto.toEntity());
+        userMapper.insertUser(dto.toEntity(encodedPw));
     }
 }
