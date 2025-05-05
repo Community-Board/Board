@@ -1,9 +1,12 @@
 package com.example.board.entity;
 
+import lombok.Builder;
 import lombok.Data;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
+@Builder
 public class UserEntity {
     private Long userNo;
     private String userId;
@@ -14,5 +17,7 @@ public class UserEntity {
     private String userTel;
     private String userEmail;
     private String userRole;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     private boolean isDeleted;
 }
