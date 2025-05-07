@@ -34,8 +34,13 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody @Valid UserRegisterRequestDto dto, BindingResult result) {
         if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body(result.getFieldError().getDefaultMessage());
+            Map<String, String> errors = new HashMap<>();
+            result.getFieldErrors().forEach(error -> 
+                errors.put(error.getField(), error.getDefaultMessage())
+            );
+            return ResponseEntity.badRequest().body(errors);
         }
+
         userService.register(dto);
         return ResponseEntity.ok("회원가입 성공");
     }

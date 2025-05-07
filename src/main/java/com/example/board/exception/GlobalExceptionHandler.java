@@ -2,6 +2,7 @@ package com.example.board.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.HashMap;
@@ -25,6 +26,14 @@ public class GlobalExceptionHandler {
         Map<String, String> response = new HashMap<>();
         response.put("error", ex.getMessage());
 
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+    
+    // LocalDate 형식 오류
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String, String>> handleNotReadable(HttpMessageNotReadableException ex) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", "데이터 형식이 잘못되었습니다.");
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
