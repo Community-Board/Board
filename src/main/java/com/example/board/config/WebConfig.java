@@ -1,22 +1,20 @@
 package com.example.board.config;
 
-import com.example.board.interceptor.JwtInterceptor;
+import com.example.board.interceptor.RoleInterceptor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+@RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
-    private final JwtInterceptor jwtInterceptor;
-
-    public WebConfig(JwtInterceptor jwtInterceptor) {
-        this.jwtInterceptor = jwtInterceptor;
-    }
+    private final RoleInterceptor roleInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(jwtInterceptor)
-                .addPathPatterns("/users/me");
+        registry.addInterceptor(roleInterceptor)
+                .addPathPatterns("/users/**");
     }
 }

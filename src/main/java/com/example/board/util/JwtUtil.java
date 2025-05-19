@@ -27,7 +27,7 @@ public class JwtUtil {
     public String generateToken(UserEntity user) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
-
+        
         return Jwts.builder()
                 .claim("userNo", user.getUserNo())
                 .claim("userRole", user.getUserRole())
@@ -51,4 +51,17 @@ public class JwtUtil {
         String userNick = claims.get("userNick", String.class);
         return userNick;
     }
+    
+    public Claims parseToken(String token) {
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (JwtException e) {
+            throw new RuntimeException("유효하지 않은 토큰입니다.");
+        }
+    }
+    
 }
