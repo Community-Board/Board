@@ -1,6 +1,5 @@
 package com.example.board.controller;
 
-import com.example.board.annotation.RoleCheck;
 import com.example.board.dto.request.UserLoginRequestDto;
 import com.example.board.dto.request.UserRegisterRequestDto;
 import com.example.board.service.UserService;
@@ -25,7 +24,6 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody UserLoginRequestDto requestDto) {
         String token = userService.login(requestDto);
-        System.out.println("토큰: " + token);
         Map<String, String> response = new HashMap<>(); // 토큰을 json 형식으로 전달하기위한 map<>형식 사용
         response.put("token", token);
 
@@ -45,8 +43,7 @@ public class UserController {
         userService.register(dto);
         return ResponseEntity.ok("회원가입 성공");
     }
-    
-    
+        
     @GetMapping("/mypage")
     public ResponseEntity<String> getMyInfo(@RequestHeader("Authorization") String authHeader) {
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -57,17 +54,5 @@ public class UserController {
         String username = jwtUtil.validateAndGetUserNick(token);
         return ResponseEntity.ok("안녕하세요, " + username + "님");
     }
-    
-    @GetMapping("/admin/resource")
-    @RoleCheck("admin")
-    public String adminOnly() {
-        return "관리자 전용 리소스";
-    }
-        
-    @GetMapping("/user/resource")
-    @RoleCheck("user")
-    public String userOnly() {
-        return "유저 전용 리소스";
-    }
-    
+       
 }

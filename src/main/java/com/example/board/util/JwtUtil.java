@@ -27,8 +27,6 @@ public class JwtUtil {
     public String generateToken(UserEntity user) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + EXPIRATION_TIME);
-
-        System.out.println("토큰 생성 시 유저 역할: " + user.getUserRole());
         
         return Jwts.builder()
                 .claim("userNo", user.getUserNo())
