@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.board.mapper.CommentMapper">
+	
+	<!-- 댓글 전체 조회 -->
+	<select id="getAllList" resultType="CommentVO">
+		SELECT * FROM board.comment
+		ORDER BY comment_no DESC
+		LIMIT #{pageSize}
+		OFFSET ${(page - 1) * pageSize}
+	</select>
+	
+	<!-- 댓글조회 -->
+	<select id="getByCommentNo" resultType="CommentVO">
+		SELECT * FROM board.comment
+		WHERE comment_no = #{commentNo}
+	</select>
+	
+	<!-- 대댓글 조회 -->
+	<select id="getBycommentPlusNo" resultType="CommentVO">
+		SELECT * FROM board.comment
+		WHERE comment_plus_no = #{commentPlusNo}
+	</select>
+	
+	<!-- 등록 -->
+	<insert id="insertComment" parameterType="CommentVO">
+		INSERT INTO board.comment
+			(comment_content, comment_plus_no, user_id)
+		VALUES
+			(#{commentContent}, #{commentPlusNo}, #{userId})
+	</insert>
+	
+	<!-- 수정 -->
+	<update id="updateComment" parameterType="CommentVO">
+		UPDATE board.comment
+		SET comment_content = #{commentContent}
+		WHERE comment_no = #{commentNo}
+	</update>
+	
+	<!-- 삭제 -->
+	<update id="deleteComment" parameterType="long">
+	    UPDATE board.comment
+		SET is_deleted = true
+		WHERE comment_no = #{commentNo}
+	</update>
+</mapper>

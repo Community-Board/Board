@@ -41,6 +41,7 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public void updateBoard(BoardReqDTO boardReqDTO) {
+		
 		BoardVO boardVO = new BoardVO();
 		boardVO.setBoardTitle(boardReqDTO.getBoardTitle());
 		boardVO.setBoardContent(boardReqDTO.getBoardContent());

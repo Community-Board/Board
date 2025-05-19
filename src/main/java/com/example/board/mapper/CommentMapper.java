@@ -3,15 +3,16 @@ package com.example.board.mapper;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.example.board.vo.CommentVO;
 
 @Mapper
 public interface CommentMapper {
 		
-	List<CommentVO> getAllList();	// 댓글 전체 조회									
+	List<CommentVO> getAllList(@Param("page") int page, @Param("pageSize") int pageSize);	// 댓글 전체 조회									
 	
-	CommentVO getByCommentNo(Long commentNo, Long commentPlusNo);	// 댓글조회
+	CommentVO getByCommentNo(Long commentNo);	// 댓글조회
 	
 	CommentVO getBycommentPlusNo(Long commentPlusNo);	// 대댓글 조회 	
 	
@@ -19,5 +20,5 @@ public interface CommentMapper {
 	
 	void updateComment(CommentVO commentVO);	// 수정
 	
-	void deleteComment(CommentVO commentVO);	// 삭제
+	void deleteComment(Long commentNo);	// 삭제
 }

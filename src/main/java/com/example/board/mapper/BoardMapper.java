@@ -10,7 +10,7 @@ import com.example.board.vo.BoardVO;
 @Mapper
 public interface BoardMapper {
 	
-	List<BoardVO> getAllList(@Param("page") int page, @Param("pageSize") int pageSize);				// 전체 게시글 조회
+	List<BoardVO> getAllList(@Param("page") int page, @Param("pageSize") int pageSize);	// 전체 게시글 조회
 	
 	BoardVO getByNo(Long boardNo);			// 게시글 한건 조회
 	
