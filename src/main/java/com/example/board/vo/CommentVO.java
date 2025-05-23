@@ -13,4 +13,5 @@ public class CommentVO {
 	private LocalDateTime updatedAt;	// 댓글 수정시간
 	private boolean isDeleted;
 	private String userId;				// 사용자 ID
+	private String userNick; 			// 사용자 닉네임
 }	

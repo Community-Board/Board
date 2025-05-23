@@ -15,5 +15,5 @@ public class CommentReqDTO {
 	private String commentContent;	// 댓글 내용
 	
 	private Long commentPlusNo; // 대댓글 번호
-	private String userId;		// 유저 ID
+	
 }

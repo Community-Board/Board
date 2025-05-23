@@ -34,7 +34,6 @@ public class BoardServiceImpl implements BoardService{
 		boardVO.setBoardTitle(boardReqDTO.getBoardTitle());
 		boardVO.setBoardContent(boardReqDTO.getBoardContent());
 		boardVO.setBoardType(boardReqDTO.getBoardType());
-		boardVO.setUserNo(boardReqDTO.getUserNo());
 		
 		boardMapper.insertBoard(boardVO);
 	}
@@ -46,7 +45,6 @@ public class BoardServiceImpl implements BoardService{
 		boardVO.setBoardTitle(boardReqDTO.getBoardTitle());
 		boardVO.setBoardContent(boardReqDTO.getBoardContent());
 		boardVO.setBoardType(boardReqDTO.getBoardType());
-		boardVO.setUserNo(boardReqDTO.getUserNo());
 		
 		boardMapper.updateBoard(boardVO);
 	}

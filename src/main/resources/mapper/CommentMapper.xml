@@ -3,24 +3,42 @@
 
 <mapper namespace="com.example.board.mapper.CommentMapper">
 	
-	<!-- 댓글 전체 조회 -->
+	<!-- 댓글 전체 조회 댓글 + 대댓글 / 등록순-->
 	<select id="getAllList" resultType="CommentVO">
 		SELECT * FROM board.comment
-		ORDER BY comment_no DESC
+		ORDER BY created_at DESC
 		LIMIT #{pageSize}
-		OFFSET ${(page - 1) * pageSize}
+		OFFSET #{offset}
 	</select>
 	
-	<!-- 댓글조회 -->
+	<!-- 댓글 한건조회 -->
 	<select id="getByCommentNo" resultType="CommentVO">
-		SELECT * FROM board.comment
-		WHERE comment_no = #{commentNo}
+		SELECT c.comment_no, c.comment_content, c.created_at, c.user_id, u.user_nick 
+		FROM comment c
+		JOIN user u ON c.user_id = u.user_id
+		WHERE c.comment_no = #{commentNo}
 	</select>
 	
-	<!-- 대댓글 조회 -->
-	<select id="getBycommentPlusNo" resultType="CommentVO">
-		SELECT * FROM board.comment
-		WHERE comment_plus_no = #{commentPlusNo}
+	<!-- 특정 대댓글 조회 --> 
+	<select id="getByCommentPlusNo" resultType="CommentVO">
+		SELECT c.comment_plus_no, c.comment_content, c.created_at, u.user_nick AS userNick
+		FROM comment c
+		JOIN user u ON c.user_id = u.user_id
+		WHERE c.comment_plus_no = #{commentPlusNo}
+		ORDER BY c.created_at DESC
+		LIMIT #{pageSize}
+		OFFSET #{offset}
+	</select>
+	
+	<!-- 닉네임으로 댓글 조회 -->
+	<select id="getByUserNick" resultType="CommentVO">
+		SELECT c.comment_no, c.comment_content, u.user_nick AS userNick
+		FROM comment c
+		JOIN user u ON c.user_id = u.user_id
+		WHERE u.user_nick = #{userNick}
+		ORDER BY c.created_at DESC
+		LIMIT #{pageSize}
+		OFFSET #{offset}
 	</select>
 	
 	<!-- 등록 -->

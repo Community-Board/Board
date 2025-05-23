@@ -10,11 +10,13 @@ import com.example.board.vo.CommentVO;
 @Mapper
 public interface CommentMapper {
 		
-	List<CommentVO> getAllList(@Param("page") int page, @Param("pageSize") int pageSize);	// 댓글 전체 조회									
+	List<CommentVO> getAllList(@Param("pageSize") int pageSize, @Param("offset") int offset);	// 댓글 전체 조회									
 	
-	CommentVO getByCommentNo(Long commentNo);	// 댓글조회
+	CommentVO getByCommentNo(@Param("commentNo") Long commentNo);	// 댓글조회
 	
-	CommentVO getBycommentPlusNo(Long commentPlusNo);	// 대댓글 조회 	
+	List<CommentVO> getByCommentPlusNo(@Param("pageSize") int pageSize, @Param("offset") int offset, @Param("commentPlusNo") Long commentPlusNo);	// 대댓글 조회
+	
+	List<CommentVO> getByUserNick(@Param("pageSize") int pageSize, @Param("offset") int offset, @Param("userNick") String userNick);		// 닉네임 조회
 	
 	void insertComment(CommentVO commentVO);	// 등록
 	
