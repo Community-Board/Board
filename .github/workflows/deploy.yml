@@ -23,13 +23,13 @@ jobs:
       run: mvn clean package -DskipTests
 
     - name: Upload build artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3.1.1
       with:
         name: spring-jar
         path: target/*.jar
 
     - name: Download artifact
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v3.1.1
       with:
         name: spring-jar
 
@@ -37,11 +37,11 @@ jobs:
       run: |
         echo "$EC2_SSH_KEY" > private_key.pem
         chmod 600 private_key.pem
-        scp -o StrictHostKeyChecking=no -i private_key.pem target/*.jar ubuntu@YOUR.EC2.IP:/home/ubuntu/app.jar
+        scp -o StrictHostKeyChecking=no -i private_key.pem target/*.jar ubuntu@54.180.179.191:/home/ubuntu/app.jar
 
     - name: SSH and restart server
       run: |
-        ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@YOUR.EC2.IP << 'EOF'
+        ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@54.180.179.191 << 'EOF'
         pkill -f 'java -jar' || true
         nohup java -jar /home/ubuntu/app.jar > app.log 2>&1 &
         EOF
