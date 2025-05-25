@@ -2,15 +2,14 @@ name: Deploy to EC2
 
 on:
   push:
-    branches:
-      - feat/workflow
+    branches: [ feat/workflow ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout source code
+    - name: Checkout source
       uses: actions/checkout@v4
 
     - name: Set up JDK 17
@@ -22,26 +21,20 @@ jobs:
     - name: Build with Maven
       run: mvn clean package -DskipTests
 
-    - name: Upload build artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: spring-jar
-        path: target/*.jar
-
-    - name: Download artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: spring-jar
-
-    - name: Copy file to EC2 using SCP
+    - name: Decode SSH key
       run: |
-        echo "$EC2_SSH_KEY" > private_key.pem
-        chmod 600 private_key.pem
-        scp -o StrictHostKeyChecking=no -i private_key.pem target/*.jar ubuntu@54.180.179.191:/home/ubuntu/app.jar
+        echo "${{ secrets.EC2_KEY }}" | base64 -d > ec2-key.pem
+        chmod 400 ec2-key.pem
 
-    - name: SSH and restart server
+    - name: Deploy to EC2
       run: |
-        ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@54.180.179.191 << 'EOF'
-        pkill -f 'java -jar' || true
-        nohup java -jar /home/ubuntu/app.jar > app.log 2>&1 &
+        ssh -o StrictHostKeyChecking=no -i ec2-key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+          mkdir -p ${{ secrets.TARGET_PATH }}
+          pkill -f 'java -jar' || true  # 기존 프로세스 종료
+        EOF
+
+        scp -o StrictHostKeyChecking=no -i ec2-key.pem target/*.jar ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ secrets.TARGET_PATH }}/app.jar
+
+        ssh -o StrictHostKeyChecking=no -i ec2-key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+          nohup java -jar ${{ secrets.TARGET_PATH }}/app.jar > ${{ secrets.TARGET_PATH }}/app.log 2>&1 &
         EOF
