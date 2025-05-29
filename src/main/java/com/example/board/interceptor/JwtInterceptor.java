@@ -23,7 +23,6 @@ public class JwtInterceptor implements HandlerInterceptor {
             String token = authHeader.substring(7);
             try {
                 jwtUtil.validateAndGetUserNick(token);
-                System.out.println("인터셉터 - 인증된 사용자: " + token);
             } catch (ExpiredJwtException e) {
                 throw new TokenException("토큰이 만료되었습니다.");
             } catch (UnsupportedJwtException e) {
