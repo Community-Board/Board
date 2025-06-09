@@ -20,7 +20,7 @@ public interface CommentMapper {
 	
 	void insertComment(CommentVO commentVO);	// 등록
 	
-	void updateComment(CommentVO commentVO);	// 수정
+	int updateComment(CommentVO commentVO);	// 수정
 	
 	void deleteComment(Long commentNo);	// 삭제
 }

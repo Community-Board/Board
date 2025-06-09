@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.board.dto.request.CommentReqDTO;
+import com.example.board.entity.UserEntity;
+import com.example.board.mapper.UserMapper;
 import com.example.board.service.CommentService;
 import com.example.board.util.JwtUtil;
 import com.example.board.util.PageUtil;
@@ -29,10 +31,12 @@ public class CommentController {
 	
 	private final CommentService commentService;
 	private final JwtUtil jwtUtil;
+	private final UserMapper userMapper;
 	
-	public CommentController(CommentService commentService, JwtUtil jwtUtil) {
+	public CommentController(CommentService commentService, JwtUtil jwtUtil, UserMapper userMapper) {
 		this.commentService = commentService;
 		this.jwtUtil = jwtUtil;
+		this.userMapper = userMapper;
 	}
 	
 	
@@ -72,7 +76,7 @@ public class CommentController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<?> insertComment(@Valid @RequestBody CommentReqDTO commentReqDto,
+	public ResponseEntity<String> insertComment(@Valid @RequestBody CommentReqDTO commentReqDto,
 											@RequestHeader("Authorization") String authHeader) {
 		if(authHeader == null || !authHeader.startsWith("Bearer")) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("토큰 없음");
@@ -87,8 +91,29 @@ public class CommentController {
 	}
 	
 	@PutMapping("/{commentNo}")
-	public void updateComment(@Valid @RequestBody CommentReqDTO commentReqDto) {
-		commentService.updateComment(commentReqDto);
+	public ResponseEntity<String> updateComment(@PathVariable Long commentNo,
+											@Valid @RequestBody CommentReqDTO commentReqDto,
+											@RequestHeader("Authorization") String authHeader) {
+		if(authHeader == null || !authHeader.startsWith("Bearer")) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("토큰 없음");
+		}
+		
+		String token = authHeader.substring(7);
+		String userNick = jwtUtil.validateAndGetUserNick(token);
+		
+		UserEntity user = userMapper.findByUserNick(userNick);		// 닉네임을 이용해 Id 값을 찾기
+		String userId = user.getUserId();
+		
+	    commentReqDto.setCommentNo(commentNo);
+	    commentReqDto.setUserId(userId);
+	    
+	    boolean result = commentService.updateComment(commentReqDto, userId);
+	    
+	    if (result) {
+	        return ResponseEntity.ok("댓글 수정 성공");
+	    } else {
+	        return ResponseEntity.status(403).body("댓글 수정 실패");
+	    }
 	}
 	
 	@DeleteMapping("/{commentNo}")

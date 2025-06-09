@@ -16,4 +16,6 @@ public class CommentReqDTO {
 	
 	private Long commentPlusNo; // 대댓글 번호
 	
+	private String userId;
+	
 }

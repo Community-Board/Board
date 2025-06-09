@@ -2,9 +2,11 @@ package com.example.board.vo;
 
 import java.time.LocalDateTime;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class CommentVO {
 	private Long commentNo;				// 댓글 번호
 	private String commentContent;		// 댓글 내용

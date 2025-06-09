@@ -54,6 +54,7 @@
 		UPDATE board.comment
 		SET comment_content = #{commentContent}
 		WHERE comment_no = #{commentNo}
+		AND user_id = #{userId}
 	</update>
 	
 	<!-- 삭제 -->

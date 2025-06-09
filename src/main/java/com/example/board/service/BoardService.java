@@ -9,13 +9,13 @@ import com.example.board.vo.BoardVO;
 
 public interface BoardService {
 	
-	List<BoardVO> getAllList(@Param("page") int page, @Param("pageSize") int pageSize);					// 전체 게시글 조회
+	List<BoardVO> getAllList(@Param("pageSize") int pageSize, @Param("offset") int offset);					// 전체 게시글 조회
 	
 	BoardVO getByNo(Long boardNo);				// 게시글 한건 조회
 	
-	void insertBoard(BoardReqDTO boardReqDTO);	// 등록
+	void insertBoard(BoardReqDTO boardReqDTO, String userNick);	// 등록
 	
-	void updateBoard(BoardReqDTO boardReqDTO);	// 수정
+	boolean updateBoard(BoardReqDTO boardReqDTO, Long userNo);	// 수정
 	
 	void deleteBoard(Long boardNo);				// 삭제
 	

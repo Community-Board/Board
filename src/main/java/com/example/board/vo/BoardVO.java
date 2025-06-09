@@ -2,9 +2,11 @@ package com.example.board.vo;
 
 import java.time.LocalDateTime;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class BoardVO {
 	private Long boardNo;					// 게시글 번호
 	private String boardTitle;				// 게시글 제목

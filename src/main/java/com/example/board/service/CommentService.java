@@ -17,7 +17,7 @@ public interface CommentService {
 	
 	void insertComment(CommentReqDTO commentReqDTO, String userNick);	// 등록
 	
-	void updateComment(CommentReqDTO commentReqDTO);	// 수정
+	boolean updateComment(CommentReqDTO commentReqDTO, String userId);	// 수정
 	
 	void deleteComment(Long commentNo);	// 삭제
 }

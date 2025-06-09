@@ -54,22 +54,35 @@ public class CommentServiceImpl implements CommentService {
 		
 		String userId = user.getUserId();
 		
+		/* builder 방식으로 객체 생성
 		CommentVO commentVO = new CommentVO();
 		commentVO.setCommentContent(commentReqDto.getCommentContent());
 		commentVO.setCommentPlusNo(commentReqDto.getCommentPlusNo());
 		commentVO.setUserId(userId);
+		*/
+		
+		CommentVO commentVO = CommentVO.builder()
+				.commentContent(commentReqDto.getCommentContent())
+				.commentPlusNo(commentReqDto.getCommentPlusNo())
+				.userId(userId)
+				.build();
 		
 		commentMapper.insertComment(commentVO);
 	}
 
 	@Override
-	public void updateComment(CommentReqDTO commentReqDto) {
+	public boolean updateComment(CommentReqDTO commentReqDto, String userId) {
+
+		CommentVO commentVO = CommentVO.builder()
+				.commentContent(commentReqDto.getCommentContent())
+				.commentNo(commentReqDto.getCommentNo())
+				.userId(commentReqDto.getUserId())
+				.build();
 		
-		CommentVO commentVO = new CommentVO();
-		commentVO.setCommentContent(commentReqDto.getCommentContent());
-		commentVO.setCommentNo(commentReqDto.getCommentNo());
+		// result 가 1이면 업데이트 성공
+		int result = commentMapper.updateComment(commentVO);
 		
-		commentMapper.updateComment(commentVO);
+		return result > 0;
 	}
 
 	@Override

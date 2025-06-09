@@ -18,4 +18,5 @@ public class BoardReqDTO {
 	private String boardContent;			// 게시글 내용
 	private int boardType;					// 게시글 종류 	ex) 1: 일반 2: 공지
 	
+	private Long userNo;
 }
