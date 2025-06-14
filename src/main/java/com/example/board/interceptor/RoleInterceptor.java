@@ -18,6 +18,11 @@ public class RoleInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
+    	String requestURI = request.getRequestURI();
+        if (requestURI.startsWith("/v3/api-docs") || requestURI.startsWith("/swagger-ui")) {
+            return true;
+        }
+    	
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }
@@ -39,7 +44,7 @@ public class RoleInterceptor implements HandlerInterceptor {
 
         token = token.substring(7);
         
-        Claims claims = jwtUtil.parseToken(token);
+        Claims claims;
         
         try {
             claims = jwtUtil.parseToken(token);
