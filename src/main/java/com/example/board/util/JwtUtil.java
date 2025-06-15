@@ -11,8 +11,8 @@ import java.util.Date;
 public class JwtUtil {
 
     private static final String SECRET_KEY = "secretkeysecretkeysecretkeysecretkeysecretkey"; // 32바이트 이상
-    private static final long EXPIRATION_TIME = 86400000; // 24시간
-        
+    //private static final long EXPIRATION_TIME = 86400000; // 24시간
+    private static final long  EXPIRATION_TIME = 604800000;  // 7일
     private SecretKey getSigningKey() {
         byte[] key = SECRET_KEY.getBytes();
         if (key.length < 32) {

@@ -2,9 +2,11 @@ package com.example.board.vo;
 
 import java.time.LocalDateTime;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class CommentVO {
 	private Long commentNo;				// 댓글 번호
 	private String commentContent;		// 댓글 내용
@@ -12,4 +14,6 @@ public class CommentVO {
 	private LocalDateTime createdAt;	// 댓글 작성시간
 	private LocalDateTime updatedAt;	// 댓글 수정시간
 	private boolean isDeleted;
+	private String userId;				// 사용자 ID
+	private String userNick; 			// 사용자 닉네임
 }	

@@ -3,7 +3,15 @@
 
 <mapper namespace="com.example.board.mapper.UserMapper">
     <select id="findByUserId" resultType="com.example.board.entity.UserEntity">
-        SELECT * FROM user WHERE user_id = #{userId} AND is_deleted = false
+        SELECT * FROM board.user 
+        WHERE user_id = #{userId} 
+        AND is_deleted = false
+    </select>
+    
+    <select id="findByUserNick" resultType="com.example.board.entity.UserEntity">
+    	SELECT * FROM board.user 
+    	WHERE user_nick = #{userNick} 
+    	AND is_deleted = false
     </select>
     
     <insert id="insertUser" parameterType="com.example.board.entity.UserEntity">

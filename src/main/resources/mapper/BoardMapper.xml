@@ -8,7 +8,7 @@
 		SELECT * FROM board.board
 		ORDER BY board_no DESC
 		LIMIT #{pageSize}
-   		OFFSET ${(page - 1) * pageSize}
+   		OFFSET #{offset}
 	</select>
 	
 	<!-- 게시글 한건 조회 -->
@@ -30,6 +30,7 @@
 		UPDATE board.board
 		SET board_title = #{boardTitle} , board_content = #{boardContent}
 		WHERE board_no = #{boardNo}
+		AND user_no = #{userNo}
 	</update>
 	
 	<!-- 삭제 -->

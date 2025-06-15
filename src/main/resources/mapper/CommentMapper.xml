@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.board.mapper.CommentMapper">
+	
+	<!-- 댓글 전체 조회 댓글 + 대댓글 / 등록순-->
+	<select id="getAllList" resultType="CommentVO">
+		SELECT * FROM board.comment
+		ORDER BY created_at DESC
+		LIMIT #{pageSize}
+		OFFSET #{offset}
+	</select>
+	
+	<!-- 댓글 한건조회 -->
+	<select id="getByCommentNo" resultType="CommentVO">
+		SELECT c.comment_no, c.comment_content, c.created_at, c.user_id, u.user_nick 
+		FROM comment c
+		JOIN user u ON c.user_id = u.user_id
+		WHERE c.comment_no = #{commentNo}
+	</select>
+	
+	<!-- 특정 대댓글 조회 --> 
+	<select id="getByCommentPlusNo" resultType="CommentVO">
+		SELECT c.comment_plus_no, c.comment_content, c.created_at, u.user_nick AS userNick
+		FROM comment c
+		JOIN user u ON c.user_id = u.user_id
+		WHERE c.comment_plus_no = #{commentPlusNo}
+		ORDER BY c.created_at DESC
+		LIMIT #{pageSize}
+		OFFSET #{offset}
+	</select>
+	
+	<!-- 닉네임으로 댓글 조회 -->
+	<select id="getByUserNick" resultType="CommentVO">
+		SELECT c.comment_no, c.comment_content, u.user_nick AS userNick
+		FROM comment c
+		JOIN user u ON c.user_id = u.user_id
+		WHERE u.user_nick = #{userNick}
+		ORDER BY c.created_at DESC
+		LIMIT #{pageSize}
+		OFFSET #{offset}
+	</select>
+	
+	<!-- 등록 -->
+	<insert id="insertComment" parameterType="CommentVO">
+		INSERT INTO board.comment
+			(comment_content, comment_plus_no, user_id)
+		VALUES
+			(#{commentContent}, #{commentPlusNo}, #{userId})
+	</insert>
+	
+	<!-- 수정 -->
+	<update id="updateComment" parameterType="CommentVO">
+		UPDATE board.comment
+		SET comment_content = #{commentContent}
+		WHERE comment_no = #{commentNo}
+		AND user_id = #{userId}
+	</update>
+	
+	<!-- 삭제 -->
+	<update id="deleteComment" parameterType="long">
+	    UPDATE board.comment
+		SET is_deleted = true
+		WHERE comment_no = #{commentNo}
+	</update>
+</mapper>
