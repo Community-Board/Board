@@ -40,6 +40,8 @@ public class GlobalExceptionHandler {
     // 예외 처리
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleException(Exception ex) {
+    	ex.printStackTrace();
+    	
         Map<String, String> response = new HashMap<>();
         response.put("error", "서버 오류가 발생했습니다.");
 
