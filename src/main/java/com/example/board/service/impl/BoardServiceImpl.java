@@ -1,13 +1,14 @@
 package com.example.board.service.impl;
 
+import java.io.IOException;
 import java.util.List;
-
 import org.springframework.stereotype.Service;
-
+import com.example.board.dto.request.AttachFileReqDTO;
 import com.example.board.dto.request.BoardReqDTO;
 import com.example.board.entity.UserEntity;
 import com.example.board.mapper.BoardMapper;
 import com.example.board.mapper.UserMapper;
+import com.example.board.service.AttachFileService;
 import com.example.board.service.BoardService;
 import com.example.board.vo.BoardVO;
 
@@ -15,10 +16,12 @@ import com.example.board.vo.BoardVO;
 public class BoardServiceImpl implements BoardService{
 	private final BoardMapper boardMapper;
 	private final UserMapper userMapper;
+	private final AttachFileService attachFileService;
 	
-	public BoardServiceImpl(BoardMapper boardMapper, UserMapper userMapper) {
+	public BoardServiceImpl(BoardMapper boardMapper, UserMapper userMapper, AttachFileService attachFileService) {
 		this.boardMapper = boardMapper;
 		this.userMapper = userMapper;
+		this.attachFileService = attachFileService;
 	}
 
 	@Override
@@ -32,10 +35,11 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public void insertBoard(BoardReqDTO boardReqDTO, String userNick) {
+	public Long insertBoard(BoardReqDTO boardReqDTO, String userNick) throws IOException{
 		
 		// userNick -> userId 조회
 		UserEntity user = userMapper.findByUserNick(userNick);
+		
 		if(user == null) {
 			throw new RuntimeException("해당 닉네임이 없습니다.");
 		}
@@ -50,6 +54,18 @@ public class BoardServiceImpl implements BoardService{
 				.build();
 	
 		boardMapper.insertBoard(boardVO);
+		Long boardNo = boardVO.getBoardNo();
+		
+	    // 첨부파일 처리
+	    if(boardReqDTO.getFiles() != null && !boardReqDTO.getFiles().isEmpty()) {
+	        AttachFileReqDTO attachFileReqDTO = new AttachFileReqDTO();
+	        attachFileReqDTO.setFiles(boardReqDTO.getFiles());
+	        attachFileReqDTO.setBoardNo(boardNo);
+
+	        attachFileService.uploadFile(attachFileReqDTO);
+	    }
+
+	    return boardNo;
 	}
 
 	@Override
