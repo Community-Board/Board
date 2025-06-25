@@ -1,5 +1,6 @@
 package com.example.board.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -51,7 +52,7 @@ public class BoardController {
 	
 	@PostMapping
 	public ResponseEntity<String> insertBoard(@Valid @RequestBody BoardReqDTO boardReqDTO,
-											@RequestHeader("Authorization") String authHeader) {
+											@RequestHeader("Authorization") String authHeader) throws IOException {
 		if(authHeader == null || !authHeader.startsWith("Bearer")) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("토큰 없음");
 		}
@@ -72,9 +73,10 @@ public class BoardController {
 			}
 		}
 		*/
-		boardService.insertBoard(boardReqDTO, userNick);
 		
-		return ResponseEntity.ok("게시글 작성 성공");
+		Long boardNo = boardService.insertBoard(boardReqDTO, userNick);
+		
+		return ResponseEntity.ok("게시글 작성 성공, 게시글 번호 : " + boardNo);
 	}
 	
 	@PutMapping("/{boardNo}")

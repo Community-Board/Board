@@ -14,4 +14,5 @@ public class AttachFileVO {
 	private LocalDateTime createdAt;		
 	private LocalDateTime updatedAt;	
 	private boolean isDeleted;
+	private Long boardNo;
 }

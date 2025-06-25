@@ -1,5 +1,6 @@
 package com.example.board.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -13,7 +14,7 @@ public interface BoardService {
 	
 	BoardVO getByNo(Long boardNo);				// 게시글 한건 조회
 	
-	void insertBoard(BoardReqDTO boardReqDTO, String userNick);	// 등록
+	Long insertBoard(BoardReqDTO boardReqDTO, String userNick) throws IOException;	// 등록
 	
 	boolean updateBoard(BoardReqDTO boardReqDTO, Long userNo);	// 수정
 	

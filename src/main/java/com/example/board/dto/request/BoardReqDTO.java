@@ -1,6 +1,8 @@
 package com.example.board.dto.request;
 
 
+import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -19,4 +21,6 @@ public class BoardReqDTO {
 	private int boardType;					// 게시글 종류 	ex) 1: 일반 2: 공지
 	
 	private Long userNo;
+	
+	private List<MultipartFile> files;
 }
